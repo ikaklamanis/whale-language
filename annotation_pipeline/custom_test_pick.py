@@ -18,6 +18,11 @@ import argparse
     
     
 def get_det_annot_data_in_range(audio_rootname, model_version, start, end):
+    '''
+    Get detected click times for audio file 'audio_rootname' in the time range [start, end]
+     - model_version: click detector version name
+     Returns: list of detected times in range
+    '''
     
     def rootname_to_book_num(audio_rootname, books):
         for book_num in range(len(books)):
@@ -92,6 +97,10 @@ def get_det_annot_data_in_range(audio_rootname, model_version, start, end):
 
 
 def create_custom_data_in_from_detections(audio_rootname, det_annot_data, start = 0, end = 0, save_dir = None):
+    '''
+    Create directory annotations for the detected cropped audio files to feed into the click separator
+     - data points are all pairs of detected clicks (click_i, click_j) that lie in the time window [start, end]
+    '''
     
     def rootname_to_book_num(audio_rootname, books):
         for book_num in range(len(books)):

@@ -19,19 +19,12 @@ import random
 from collections import Counter
 
 
+## TODO: code to filter audio file and extract time windows with clicks based on detections of 1st click detector
+
+
 def group_click_times_to_windows(click_time_preds, distance = 60):
-    windows = []
-    curr_window = [click_time_preds[0]]
-    for i in range(1, len(click_time_preds)):
-        pred_time = click_time_preds[i]
+    raise NotImplementedError
 
 
-def find_windows_with_clicks(audio_rootname, click_time_preds, distance = 3_000, ):
-    windows = []
-    
-    for i in range(len(click_time_preds)):
-        pred_time = click_time_preds[i]
-        
-    
-    
-    return windows
+def find_windows_with_clicks(audio_rootname, click_time_preds, distance = 3_000):
+    raise NotImplementedError

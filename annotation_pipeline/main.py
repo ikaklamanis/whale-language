@@ -16,7 +16,37 @@ from click_differentiator_test_mode import *
 from cluster_detected_clicks_to_speakers import *
 
 
-def pipeline(audio_rootname, det_model_version, det_model_load_dir, sep_model_version, sep_model_load_dir):
+def pipeline(audio_rootname, det_model_version, det_model_load_dir, sep_model_version, sep_model_load_dir,
+             first_click_num, last_click_num):
+    '''
+    Pipeline method for detecting clicks, clustering them into speakers, and plotting clustered clicks.
+    Makes use of several methods imported from the python files above.
+    The pipeline can be broken down to 10 main steps. Each step is commented in the code.
+    Currently the pipeline is set up in a way that each step can be executed only if the previous steps have been executed.
+    
+
+    Parameters
+    ----------
+    audio_rootname : string
+        DESCRIPTION. audio filename.
+    det_model_version : string
+        DESCRIPTION. click detector model version name.
+    det_model_load_dir : string
+        DESCRIPTION. directory from which to load trained click detector model version.
+    sep_model_version : string
+        DESCRIPTION. click separator model version name.
+    sep_model_load_dir : string
+        DESCRIPTION. directory from which to load trained click separator model version.
+    first_click_num : int
+        DESCRIPTION. number of first click in range [first click num, last click num].
+    last_click_num : int
+        DESCRIPTION. number of first click in range [first click num, last click num].
+
+    Returns
+    -------
+    None.
+
+    '''
     
     main_dir = '/data/vision/torralba/scratch/ioannis/clustering/'
     
@@ -108,11 +138,7 @@ def pipeline(audio_rootname, det_model_version, det_model_load_dir, sep_model_ve
     
     
     ######### Specify a time window in the audio file: either [click #, click #] or [start_time, end_time]
-    
-    # first_click_num = 747
-    # last_click_num = 843
-    first_click_num = 210
-    last_click_num = 420    
+        
     start = first_click_num
     end = last_click_num + 1
     
@@ -155,11 +181,20 @@ def pipeline(audio_rootname, det_model_version, det_model_load_dir, sep_model_ve
 
 if __name__ == '__main__':
     
+    ## specify audio rootname and range of click numbers (first-last click num)
+    
     # audio_rootname = 'sw061b002'
     audio_rootname = 'sw061b003'
     # audio_rootname = 'sw090b002'
     
-    # 'click_regress_all_noise_3580_17per' --> 499
+    first_click_num = 210
+    last_click_num = 420
+    
+    ## specify model versions for click detector and click separator    
+    
+    # det_model_version = 'click_regress_all_noise_3580_17per' ## trained with hard (noise) examples
+    # det_model_load_dir = '/data/vision/torralba/scratch/ioannis/click_regress/training/ckpts/click_regress_all_noise_3580_17per/499.pth.tar'
+    
     det_model_version = 'click_reg_wav' ## not trained with hard (noise) examples
     det_model_load_dir = '/data/scratch/ioannis/ckpts/click_reg_wav/499.pth.tar'
     sep_model_version = 'correct_cnn_cfs'
@@ -168,6 +203,8 @@ if __name__ == '__main__':
     
     print('\n', 'RUNNING PIPELINE on audio file: ', audio_rootname, '\n')
     
-    pipeline(audio_rootname, det_model_version, det_model_load_dir, sep_model_version, sep_model_load_dir)
+    ## main method (pipeline), can be broken down to 10 steps
+    pipeline(audio_rootname, det_model_version, det_model_load_dir, sep_model_version, sep_model_load_dir,
+             first_click_num, last_click_num)
 
 

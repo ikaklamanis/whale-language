@@ -35,6 +35,9 @@ def parseCoda(book, i, time_origin):
 
 
 def rootname_to_book_num(audio_rootname, books):
+    '''
+    Get book number (0-51) from audio rootname (e.g. 'sw061b001' -> 0)
+    '''
     for book_num in range(len(books)):
         book, filename = books[book_num]
         if audio_rootname == filename:
@@ -42,6 +45,10 @@ def rootname_to_book_num(audio_rootname, books):
         
 
 def save_ground_truth_click_times(audio_rootname):
+    '''
+    Get all click times for file 'audio_rootname' from annotations and save them in pickle file.
+    Saved click times are in the form [(click_time, whale_num),...]
+    '''
     
     main_dir = '/data/vision/torralba/scratch/ioannis/clustering/'
     
@@ -85,6 +92,17 @@ def save_ground_truth_click_times(audio_rootname):
 
 
 def save_global_and_local_labels(audio_rootname):
+    '''
+    Create np arrays of click times for file 'audio_rootname' based on annotations,
+    where array[i, :] is the list of click times occurring between i sec and (i+1) sec in audio_rootname,
+        plus the click times occurring in the first 0.091 sec of the next 1-sec file.
+        -- so might contain some click times twice
+    
+    global: times are saved as global times, i.e. all times are floats 0 <= t <= file_duration (in sec)
+    local: times are saved as local times, i.e. all times are floats 0 <= t <= 1sec
+    
+    To be used for matching detections of click detector with ground truth and for plotting.
+    '''
     
     ## window in seconds: 2000 / 22050
     ## only considers next (not prev)

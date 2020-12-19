@@ -26,6 +26,16 @@ def get_ext(file_path):
 
 
 def relocate_predictions(audio_rootname, audio_annot_directory, det_save_dir, reloc_dir):
+    '''
+    Relocate detections of click detector on entire audio file 'audio_rootname' for easier processing.
+     - audio_annot_directory: directory of pickle file with the directory annotations (1-sec file directories) 
+                                that were fed to the click detector
+     - det_save_dir: directory where detections were saved by click detector
+     - reloc_dir: directory in which to relocate detections (organized by model_version, year, audio_rootname)
+     
+     Effect: re-organizes detections into np array where array.shape[0] = int(duration of audio_rootname)
+             and saves each second's detections in separate pickle file. 
+    '''
     
     if not os.path.exists(reloc_dir):
         os.makedirs(reloc_dir)

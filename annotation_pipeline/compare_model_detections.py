@@ -461,6 +461,50 @@ def get_year(file_directory):
 
 
 def click_detector_parse_entire_file(audio_rootname = None, model_preds_dir = None, conf_number = 15, model_version = None):
+    '''
+    
+    Main method that parses entire audio file based on (relocated) detections of click detector. 
+    Makes use of helper methods above. Four main steps: 
+    
+    1. Parse, threshold, average detected click times, and "align" them with ground truth click times: 
+     - conf_number: confidence threshold number to use to accept detections (based on frequency of detection) 
+                    Do not accept times t if they appear in the detected times less than 'conf_number' times.
+                    Good value might be around 60. Can be passed a argument
+     - average_preds (boolean): if true, average detections. Currently not passed as a argument
+     - range_size: size of window to use when averaging detections, measured in # frames (1 sec = 22050 frames)
+                 default value: 25, ~ 1 millisecond. Currently not passed as a argument
+    
+        ** Effect: saves processed detected times in pickle file for later use.  
+    
+                 
+    2. Compare and "match" detections with ground truth click times:
+         - epsilon: max time distance (in #frames) to use in order to match a ground truth click time with a detected time
+                    i.e., click time t (sec) is matched if there exists a detected click time pred_t (sec) such that:
+                        abs(t - pred_t) <= epsilon / rate, where rate is 22050
+                    default value: 100 (frames), ~ 3 milliseconds. Currently not passed as a argument
+                    
+         - reuse_preds (boolean): If true, then can use same detection more than once when trying to match ground truth click times.
+                                  If false, each detection can be used at most once when matching click times
+                                  default value: false. Currently not passed as a argument
+                                  
+        Returns: lists of missed_clicks, matched_clicks, unmatched_preds, matched_preds
+        **** currently this data is not being saved for later use ****    
+    
+    3. Plot detected click times (top subplot) vs ground truth click times (bottom subplot)
+      - start_time = 0
+      - end_time = duration of audio_rootname
+      - every_num_sec (default = 100): length of time window for each plot
+      - save_dir: specified in code
+      ** These are not currently passed as arguments
+     
+    4. Plot waveforms of missed clicks
+     - save_dir: specified in code. Currently not passed as an argument
+
+
+    *** NOTE: "Currently not passed as a parameter" means that currently this parameter is not an argument for this method,
+               but its value is specified instead within the method's body.
+    '''
+    
     
     def rootname_to_book_num(audio_rootname, books):
         for book_num in range(len(books)):

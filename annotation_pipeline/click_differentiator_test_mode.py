@@ -153,6 +153,21 @@ class value_net(nn.Module):
 
 def run_click_separator_test_mode(audio_rootname, sep_model_version, sep_model_load_dir, exp_name, det_model_version,
                                   start, end):
+    '''
+    Run click separator model (in test mode) to get same/diff whale predictions for all pairs of clicks in specified window of audio file 'audio_rootname'
+    - sep_model_version: click separator version name, to be used in naming directory to save predictions
+    - sep_model_load_dir: directory from which to load trained click separator model version
+    - exp_name: experiment name, not important.
+    - det_model_version: click detector version used earlier in the pipeline
+    - start (int): start time of window (in sec)
+    - end (int): end time of window (in sec)
+    
+    Effect: saves all-pairs predictions in batches (usually only 1 batch) in pickle files in the following directory:
+        
+        '/data/vision/torralba/scratch/ioannis/clustering/custom_test_pick_preds/' 
+        + det_model_version + '/' + audio_rootname + '/' + audio_rootname + '_clicks_' + str(start) + '_' + str(end) + '.p'
+    
+    '''
     
     
     

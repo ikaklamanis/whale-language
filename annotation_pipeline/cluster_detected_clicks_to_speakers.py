@@ -688,6 +688,14 @@ def get_total_misclusterings(whale_num_to_cluster_num, actual_click2whale, pred_
 
 ## main method: clusters clicks to speakers, groups clicks into codas, plots clustered clicks in BoW style
 def cluster_clicks_to_speakers(audio_rootname, start, end, det_model_version):
+    '''
+    Main method: clusters clicks in time range [start, end] to speakers, groups clicks into codas, plots clustered clicks in Book of Whales (BoW) style
+    - det_model_version: click detector version used earlier in the pipeline
+    - start (int): start time of window (in sec)
+    - end (int): end time of window (in sec)
+    
+    Reuses some methods and parameters from python file 'compare_model_detections.py'
+    '''
     
     def rootname_to_book_num(audio_rootname, books):
         for book_num in range(len(books)):

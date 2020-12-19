@@ -43,6 +43,10 @@ def get_year(file_directory):
 
 
 def crop_audio(file_to_crop, dataset_directory, cropped_audio_save_dir):
+    '''
+    Crop audio file 'file_to_crop' into 1-sec audio files (crops)
+    Save audio crops in directory 'cropped_audio_dir' 
+    '''
     
     file_directory = get_directory(dataset_directory, file_to_crop)
     yr = get_year(file_directory)
@@ -74,6 +78,13 @@ def crop_audio(file_to_crop, dataset_directory, cropped_audio_save_dir):
 
 
 def create_annot_audio_dirs_augmented(file_to_crop, cropped_audio_save_dir, sort=True, augment=True):
+    '''
+    Create directory annotations for the cropped audio files to feed into the click detector
+    
+    If augment == True, the ith 'data point' consists of both the current (ith) crop and the (i+1)th crop
+    so that the click detector can read the first part of the next audio crop together with the current crop
+    Purpose: do not miss clicks on edges of crops
+    '''
     
     dataset_directory = '/data/scratch/ioannis/dataset/'    
     # root_dir = get_directory(cropped_audio_save_dir, file_to_crop[:-4])

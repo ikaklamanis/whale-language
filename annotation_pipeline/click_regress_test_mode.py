@@ -158,6 +158,17 @@ class value_net(nn.Module):
 
 
 def run_click_detector_test_mode(audio_rootname, model_version, model_load_dir, exp_name):
+    '''
+    Run click detector model (in test mode) to parse the entire audio file 'audio_rootname'
+    - model_version: click detector version name, to be used in naming directory to save predictions
+    - model_load_dir: directory from which to load trained click detector model version
+    - exp_name: experiment name, not important.
+    
+    Effect: saves detections in batches (usually only 1 batch) in pickle files in the following directory:
+        
+        '/data/vision/torralba/scratch/ioannis/click_regress/training/detector_noise_right_edges_annot_data/' 
+         + model_version + '/' + audio_rootname + '/' + 'batch_' + str(i_batch) + '.p'
+    '''
     
     ############ Admin work (directories) ###################################################
     
